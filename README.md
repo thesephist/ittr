@@ -5,7 +5,7 @@
 
 Small library of iterator-related utility functions for JavaScript.
 
-**Documentation**: [GitHub Pages](https://thesephist.github.io/ittr/).
+**Documentation**: [GitHub Pages](https://thesephist.github.io/ittr/src/index.js.html).
 
 Ittr doesn't try to be a comprehensive hub of all array methods -- there are lots of NPM libraries will do that very well. This is just a smaller collection of just the essential (by my definition of _essential_) array/iterator methods I've learned comes up very, very often in UI development, including many that aren't a part of the JavaScript standard.
 
@@ -20,7 +20,7 @@ Ittr doesn't try to be a comprehensive hub of all array methods -- there are lot
 
 Import it with a `<script>` tag...
 
-```
+```html
 <script src="https://unpkg.com/ittr/dist/index.min.js"></script>
 ```
 
