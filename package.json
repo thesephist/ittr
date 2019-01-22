@@ -13,7 +13,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "docs": "litterate --config litterate.config.js",
-    "test": "nyc mocha test/test.js"
+    "test": "nyc mocha test/test.js",
+    "prepublishOnly": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
