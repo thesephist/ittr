@@ -1,6 +1,7 @@
 # ittr
 
 [![npm ittr](https://img.shields.io/npm/v/ittr.svg)](http://npm.im/ittr)
+[![Build Status](https://travis-ci.com/thesephist/ittr.svg?branch=master)](https://travis-ci.com/thesephist/ittr)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/ittr/dist/index.min.js?compression=gzip)](https://unpkg.com/ittr/dist/index.min.js)
 
 Small library of iterator-related utility functions for JavaScript.
