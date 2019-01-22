@@ -1,6 +1,6 @@
 {
   "name": "ittr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Small library of iterator-related utility functions for JavaScript",
   "main": "src/index.js",
   "repository": "git@github.com:thesephist/ittr.git",
