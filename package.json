@@ -1,0 +1,15 @@
+{
+  "name": "ittr",
+  "version": "0.1.0",
+  "description": "Small library of iterator-related utility functions for JavaScript",
+  "main": "src/index.js",
+  "repository": "git@github.com:thesephist/ittr.git",
+  "author": "Linus Lee <linus@thesephist.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs": "litterate --config litterate.config.js"
+  },
+  "devDependencies": {
+    "litterate": "^0.1.0"
+  }
+}
