@@ -1,3 +1,7 @@
+//> Identity function used as default values for some later
+//  iteration functions
+const identity = x => x;
+
 //> Internally, this representation allows us to chain
 //  iterator method calls together. Most of these methods
 //  emit an object instance of `Iter` itself.
@@ -17,7 +21,7 @@ class Iter {
     }
 
     //> Normal filter from an iterator to an iterable
-    filter(fn) {
+    filter(fn = identity) {
         const result = [];
         for (const member of this.iterable) {
             if (fn(member)) {
@@ -33,12 +37,12 @@ class Iter {
         for (const member of this.iterable) {
             result = fn(result, member);
         }
-        return new Iter(result);
+        return result;
     }
 
     //> Reports true if every member of the iterable
     //  evaluates to truthy value when passed into `fn`
-    every(fn) {
+    every(fn = identity) {
         for (const member of this.iterable) {
             if (!fn(member)) {
                 return false;
@@ -49,7 +53,7 @@ class Iter {
 
     //> Reports true if one or more member(s) of the iterable
     //  evaluates to truthy value when passed into `fn`
-    some(fn) {
+    some(fn = identity) {
         for (const member of this.iterable) {
             if (fn(member)) {
                 return true;
@@ -60,8 +64,9 @@ class Iter {
 
     //> Maps over an iterable and flattens each returned value from `fn`
     //  with depth 1 before concatenating it into the result iterable.
-    flatMap(fn) {
-        return this.reduce((cur, next) => cur.concat(fn(next)), []);
+    flatMap(fn = identity) {
+        const result = this.reduce((cur, next) => cur.concat(fn(next)), []);
+        return new Iter(result);
     }
 
     //> Partition the list of iterable values
@@ -88,7 +93,7 @@ class Iter {
     //  and returns a value by which each member should be compared.
     //  In practice, I've found this more useful than the general
     //  comparison-based sort method in JavaScript `Array.prototype.sort`.
-    sortBy(fn) {
+    sortBy(fn = identity) {
         const result = [...this.iterable].sort((a, b) => {
             const fnA = fn(a);
             const fnB = fn(b);
@@ -112,7 +117,13 @@ class Iter {
     //> An `Iter` instance is also a JavaScript iterator, which means
     //  we can spread (`...iter`) and `for...of` loop over it.
     [Symbol.iterator]() {
-        return this.iterable;
+        const iterable = this.iterable;
+        const gen = function* () {
+            for (const member of iterable) {
+                yield member;
+            }
+        }
+        return gen();
     }
 
 }
@@ -168,6 +179,7 @@ const exposedNames = {
     zip,
 }
 if (typeof window === 'object') {
+    /* istanbul ignore next */
     window.Ittr = exposedNames;
 }
 if (typeof module === 'object' && module.exports) {
