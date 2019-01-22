@@ -1,9 +1,13 @@
+//> Internally, this representation allows us to chain
+//  iterator method calls together. Most of these methods
+//  emit an object instance of `Iter` itself.
 class Iter {
 
     constructor(iterable) {
         this.iterable = iterable;
     }
 
+    //> Normal map over an iterator
     map(fn) {
         const result = [];
         for (const member of this.iterable) {
@@ -12,6 +16,7 @@ class Iter {
         return new Iter(result);
     }
 
+    //> Normal filter from an iterator to an iterable
     filter(fn) {
         const result = [];
         for (const member of this.iterable) {
@@ -22,6 +27,7 @@ class Iter {
         return new Iter(result);
     }
 
+    //> Normal left reduce over an iterator
     reduce(fn, initial) {
         let result = initial;
         for (const member of this.iterable) {
@@ -30,6 +36,8 @@ class Iter {
         return new Iter(result);
     }
 
+    //> Reports true if every member of the iterable
+    //  evaluates to truthy value when passed into `fn`
     every(fn) {
         for (const member of this.iterable) {
             if (!fn(member)) {
@@ -39,6 +47,8 @@ class Iter {
         return true;
     }
 
+    //> Reports true if one or more member(s) of the iterable
+    //  evaluates to truthy value when passed into `fn`
     some(fn) {
         for (const member of this.iterable) {
             if (fn(member)) {
@@ -48,10 +58,16 @@ class Iter {
         return false;
     }
 
+    //> Maps over an iterable and flattens each returned value from `fn`
+    //  with depth 1 before concatenating it into the result iterable.
     flatMap(fn) {
         return this.reduce((cur, next) => cur.concat(fn(next)), []);
     }
 
+    //> Partition the list of iterable values
+    //  into a list of arrays, each with max size `maxSize`, in order
+    //  that the members appear in the iterable. i.e.
+    //  `iter([1, 2, 3, 4, 5]).partition(3) == [[1, 2, 3], [4, 5]]`
     partition(maxSize) {
         const result = [[]];
         let idx = 0;
@@ -67,6 +83,11 @@ class Iter {
         return new Iter(result);
     }
 
+    //> Perform a non-stable sort of the iterable list values
+    //  by some deterministic comparator function that takes each member
+    //  and returns a value by which each member should be compared.
+    //  In practice, I've found this more useful than the general
+    //  comparison-based sort method in JavaScript `Array.prototype.sort`.
     sortBy(fn) {
         const result = [...this.iterable].sort((a, b) => {
             const fnA = fn(a);
@@ -82,18 +103,27 @@ class Iter {
         return new Iter(result);
     }
 
+    //> Convert whatever iterable value is currently represented
+    //  by the `Iter` instance into a flat array.
     toArray() {
         return [...this.iterable];
     }
 
+    //> An `Iter` instance is also a JavaScript iterator, which means
+    //  we can spread (`...iter`) and `for...of` loop over it.
     [Symbol.iterator]() {
         return this.iterable;
     }
 
 }
 
+//> Shorthand function to convert an iterator into a chainable
+//  `Iter` object.
 const iter = x => new Iter(x);
 
+//> Helper implementation of `range` that takes exactly three arguments.
+//  The exposed `range()` API is variadic, but that calls this with deterministic
+//  order of arguments.
 function _range(start, end, step) {
     const result = [];
     for (let i = start; i < end; i += step) {
@@ -102,6 +132,7 @@ function _range(start, end, step) {
     return result;
 }
 
+//> `range()` function whose API is identical to Python `range`. Returns an Array instance.
 function range(a1, a2, a3) {
     if (a3 === undefined) {
         if (a2 === undefined) {
@@ -114,6 +145,8 @@ function range(a1, a2, a3) {
     }
 }
 
+//> Similar to Python `zip()`, zips together arrays passed in. `zip()` is variadic.
+//  i.e. `zip([1, 2], ['a', 'b']) => [[1, 'a'], [2, 'b']]`
 function zip(...arrays) {
     const arrayCount = arrays.length;
     const maxLen = Math.max(...arrays.map(a => a.length));
@@ -128,9 +161,16 @@ function zip(...arrays) {
     return result;
 }
 
-module.exports = {
+//> Export those APIs!
+const exposedNames = {
     iter,
     range,
     zip,
+}
+if (typeof window === 'object') {
+    window.Ittr = exposedNames;
+}
+if (typeof module === 'object' && module.exports) {
+    module.exports = exposedNames;
 }
 
