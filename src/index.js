@@ -66,8 +66,8 @@ class Iter {
 
     //> Partition the list of iterable values
     //  into a list of arrays, each with max size `maxSize`, in order
-    //  that the members appear in the iterable. i.e.
-    //  `iter([1, 2, 3, 4, 5]).partition(3) == [[1, 2, 3], [4, 5]]`
+    //  that the members appear in the iterable. e.g.
+    //  `iter([1, 2, 3, 4, 5]).partition(3).toArray() == [[1, 2, 3], [4, 5]]`
     partition(maxSize) {
         const result = [[]];
         let idx = 0;
@@ -146,7 +146,7 @@ function range(a1, a2, a3) {
 }
 
 //> Similar to Python `zip()`, zips together arrays passed in. `zip()` is variadic.
-//  i.e. `zip([1, 2], ['a', 'b']) => [[1, 'a'], [2, 'b']]`
+//  e.g. `zip([1, 2], ['a', 'b']) => [[1, 'a'], [2, 'b']]`
 function zip(...arrays) {
     const arrayCount = arrays.length;
     const maxLen = Math.max(...arrays.map(a => a.length));
