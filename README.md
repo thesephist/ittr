@@ -151,7 +151,7 @@ When the `predicate` function is not specified, an identity function (`x => x`) 
 ### `iter.partition(maxSize)`
 
 ```javascript
-iter([1, 2, 3, 4, 5, 6, 7, 8]).partition(3);
+iter([1, 2, 3, 4, 5, 6, 7, 8]).partition(3).toArray();
 // [[1, 2, 3], [4, 5, 6], [7, 8]]
 ```
 
@@ -164,7 +164,7 @@ iter([
     {age: 3},
     {age: 15},
     {age: 9},
-]).sortBy(obj => obj.age);
+]).sortBy(obj => obj.age).toArray();
 // [
 //     {age: 3},
 //     {age: 9},
@@ -175,6 +175,27 @@ iter([
 Returns a new `iter` object containing all the items from the original iterator, sorted by the comparator that `predicate` returns when it's called with each item. Internally, it just uses `Array.prototype.sort`.
 
 When no `predicate` is specified, it defaults to the identity function, which results in identical behavior to `Array.prototype.sort`.
+
+### Chaining `iter` methods
+
+Because each `iter` method call returns another `iter` object, we can chain method calls together to easily perform sophisticated list manipulations.
+
+```javascript
+iter(range(2, 20))
+    .filter(x => x % 2 === 0) // only evens, [2 .. 18]
+    .partition(3) // group by 3, [[2, 4, 6], [8, 10, 12], ...]
+    .map(([a, b, c]) => `${a} < ${b} < ${c}`)
+    .toArray().join(', ');
+// '2 < 4 < 6, 8 < 10 < 12, 14 < 16 < 18'
+
+iter(users)
+    .filter(user => user.isAdmin)
+    .sortBy(user => user.name)
+    .map(user => new UserView(user))
+    .partition(2)
+    .toArray();
+// list of admin user views, sorted by name, grouped into pairs
+```
 
 ### `range(start [, end [, step]])`
 
