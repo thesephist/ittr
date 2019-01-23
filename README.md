@@ -49,8 +49,10 @@ We can convert the Ittr object back to an array using `iter.toArray()`, or by it
 ```javascript
 myIterable.toArray();
 // [1, 2, 3, 4, 5]
+
 [...myIterable]
 // [1, 2, 3, 4, 5]
+
 const arr2 = []
 for (const x of myIterable) {
     arr2.push(x);
@@ -58,7 +60,7 @@ for (const x of myIterable) {
 // arr == [1, 2, 3, 4, 5]
 ```
 
-iter has a variety of commonly used list methods with reasonable defaults.
+`iter` has a variety of commonly used list methods with reasonable defaults.
 
 ### `iter.map(predicate)`
 
@@ -202,7 +204,7 @@ range(0, 3, 0.5);
 zip(
     [1, 2, 3],
     ['a', 'b', 'c'],
-    ['X', 'Y', 'Z]
+    ['X', 'Y', 'Z']
 );
 //  [
 //     [1, 'a', 'X'],
@@ -225,6 +227,6 @@ zip(...zippedArray);
 // [
     // [1, 2, 3],
     // ['a', 'b', 'c'],
-    // ['X', 'Y', 'Z],
+    // ['X', 'Y', 'Z'],
 // ]
 ```
